@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<!--{{ url_for('static', filename='style.css') }}-->
+<head>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script type="text/javascript">
+		function teamOrPlayer() {
+			var chkPlayer = document.getElementById("playerBtn");
+			var playerSelect = document.getElementById("playerSelect");
+			playerSelect.style.display = chkPlayer.checked ? "block" : "none";
+			var chkTeam = document.getElementById("teamBtn");
+			var teamSelect = document.getElementById("teamSelect");
+			teamSelect.style.display = chkTeam.checked ? "block" : "none";
+			var playerDatalist = document.getElementById("playerDatalist");
+			var teamDatalist = document.getElementById("teamDatalist");
+			if(chkTeam.checked){
+				playerDatalist.value = ""
+			}
+			if(chkPlayer.checked){
+				teamDatalist.value = ""
+			}
+		}
+		function showShots(value){
+			var needShots = ['Fave Shots','   Fave Shots by Qtr','Highest Efficiency Shots','   Highest Efficiency Shots by Qtr'];
+			var show = needShots.includes(value);
+			var shotSelect = document.getElementById("shotSelect");
+			shotSelect.style.display = show ? "block" : "none";
+		}
+		jQuery(function ($) {
+			var $inputs = $('input[name=p],input[name=t]');
+			$inputs.on('input', function () {
+				// Set the required property of the other input to false if this input is not empty.
+				$inputs.not(this).prop('required', !$(this).val().length);
+		});
+});
+	</script>
+	<link rel="stylesheet" type="text/css" href="static/style.css">
+</head>
+<div id="titleDiv">  
+	<h1>NBA Shot Chart Generator ({{year}} Season)</h1>
+</div>
+<div id="textDiv">
+	<form class="form-inline" method="GET" action="">
+		<div class="radio-button">
+			<input type="radio" id="playerBtn" name="g" value="plyr" onclick="teamOrPlayer()" checked>
+			<label for="player" >Player</label><br>
+			<input type="radio" id="teamBtn" name="g" value="team" onclick="teamOrPlayer()"> 
+			<label for="team">Team (this might take a while)</label>
+		</div>
+		
+		<div class="selectDiv" id="playerSelect">
+			<input list="playersList" id = "playerDatalist" name="p" onclick="this.value=''" placeholder="Player" required>
+			<datalist id="playersList" >
+				{% for o in playerData %}
+				 <option value="{{ o}}">{{ o}}</option>
+				{% endfor %}
+			</datalist>
+		</div>
+		
+		<div class="selectDiv" id="teamSelect" style="display: none;">
+			<input list="teamsList" id = "teamDatalist" name="t" onclick="this.value=''" placeholder="Team" required>
+			<datalist id="teamsList">
+				{% for o in teamData %}
+				 <option value="{{ o}}">{{ o}}</option>
+				{% endfor %}
+			</datalist>
+		</div>
+		
+		<div class="selectDiv" id="statSelect">
+			<input list="statsList" name="stat" onclick="this.value=''" onchange="showShots(this.value)" placeholder="Statistic" required>
+			<datalist id="statsList" >
+				{% for o in statOptions %}
+				 <option value="{{ o}}">{{ o}}</option>
+				{% endfor %}
+			</datalist>
+		</div>
+		<div class="selectDiv" id="shotSelect" style="display: none;">
+			<label for="shots">Shots (max 30):</label>
+			<input type="number" name="shots" min="1" max="30" step="1" value="10">
+		</div>
+		
+		<br>
+		
+		<button type="submit" class="btn">Generate Chart</button>
+	</form>
+</div>
+<div id="imgDiv">
+	<img src="{{url}}" alt="<- Generate a Shot Chart" onerror="this.style.display='none'" height="600" vertical-align="middle" width="564">
+</div>
