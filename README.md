@@ -1,6 +1,6 @@
 # NBAShotChartGeneratorWebApp
 
-A Python web-app built with the Flask framework that uses [nba-api](https://github.com/swar/nba_api) to pull shot chart information on active players in the current NBA Season.
+A Python web-app built with the [Flask](https://flask.palletsprojects.com/en/1.1.x/) framework that uses [nba-api](https://github.com/swar/nba_api) to pull shot chart information on active players in the current NBA Season.
 The app works well on a local server, but I'm currently running into ReadTimeoutErrors on live. If/when the app is up and running, it will be available [here](https://nba-shot-chart-generator.herokuapp.com/):
 
 
